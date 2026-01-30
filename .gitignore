@@ -1,0 +1,16 @@
+# The data file
+data/
+
+# The results file
+results/
+
+# Visual Studio Code settings
+.vscode/
+
+# R specific
+.Rhistory
+.RData
+.Ruserdata
+
+# macOS specific
+.DS_Store

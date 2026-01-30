@@ -1,0 +1,46 @@
+# The master manuscript script.
+# Created by C. N. Mwagwabi on 2025-06-27
+# Last modified by C. N. Mwagwabi on 2025-06-27
+# Individual R scripts are sourced in this script to create the master manuscript.
+
+# Initialize an r environment
+# renv::init(bare = TRUE)
+
+# Load the data
+updated_combined_data <- readr::read_csv(
+  "./data/updated_combined_data.csv",
+)[, -1]
+
+# Add the residuals and z-scores
+source("scripts/residual_calc.r")
+
+# Create a file for the dropped participants
+source("scripts/dropped_participants.r")
+
+# Create table 1 and table for those not analysed
+# Bstfun package no longer available. Need to adapt code.
+source("scripts/table1_v2.r")
+
+# Prognostic sensitivity results
+source("scripts/sensitivity tables_graph.R")
+
+# Creating Nelson-Aalen plots
+source("scripts/rates_nelson_aalen.r")
+
+# Creating forestplots
+# Association of BP with mortality and CV events (Cox regression)
+source("scripts/new_forest_plot_residual.r")
+
+# Association of BP with mortality and CV events (Cox regression) - 1 year sensitivity
+source("scripts/new_forest_plot_sensitivity_1year.r")
+
+# Association of BP with mortality and CV events (Cox regression) - per 1/2 SD
+source("scripts/new_forest_plot_SD_increment.r")
+
+# Association of BP with mortality and CV events (Poisson regression)
+source("scripts/poisson_reg.r")
+
+# Association of BP with mortality and CV events (Poisson regression) - no interpolation
+# Ensure to run the project master file with no imputation and change labels correctly
+source("scripts/poisson_reg.r")
+
