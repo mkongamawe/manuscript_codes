@@ -1,3 +1,7 @@
+.gitignore
+
+#Scripts to be ignored
+scripts/check_data_types.r
 # The data file
 data/
 

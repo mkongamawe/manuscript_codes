@@ -8,7 +8,7 @@
 
 # Load the data
 updated_combined_data <- readr::read_csv(
-  "./data/updated_combined_data.csv",
+  "./data/manuscript_data.csv",
 )[, -1]
 
 # Add the residuals and z-scores
@@ -43,4 +43,3 @@ source("scripts/poisson_reg.r")
 # Association of BP with mortality and CV events (Poisson regression) - no interpolation
 # Ensure to run the project master file with no imputation and change labels correctly
 source("scripts/poisson_reg.r")
-
