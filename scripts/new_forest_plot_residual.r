@@ -36,8 +36,7 @@ var_label(updated_combined_data) <- list(
   idaco_dia_avg = "24h DBP",
   sex = "Sex",
   on_med_htn = "Antihypertensive Drug",
-  current_smoke = "Current Smoking Status",
-  idaco_bp_phenotype = "Hypertension Phenotypes"
+  current_smoke = "Current Smoking Status"
 )
 
 ###########################################
@@ -382,7 +381,7 @@ p1 <- grid2grob(print(all_cardio_plot))
 p2 <- grid2grob(print(all_cardio_plot_2))
 
 all_all_cardio_dia <- wrap_plots(p1, p2, nrow = 2) +
-    plot_annotation(title = "All cardiovascular events (n = 34)",
+    plot_annotation(title = "All cardiovascular events (n = 39)",
                     theme = theme(plot.title = element_text(size = 30, hjust = 0.5)))
 
 all_all_cardio_dia
@@ -737,7 +736,7 @@ all_all_mortality_sys_dia <- wrap_plots(p1, p2, nrow = 2) +
 all_all_plots <- ggarrange(all_all_mortality_sys_dia, all_all_cardio_dia, ncol = 2)
 
 ggsave("New all mortality cardio.svg",
-       path = "..\\Manuscript\\final_manuscript_results\\Figures",
+       path = "results/figures",
        height = 30, width = 60, units = "cm",
        dpi = 400)
 

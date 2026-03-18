@@ -40,8 +40,7 @@ var_label(updated_combined_data_x) <- list(
   idaco_dia_avg = "24h DBP",
   sex = "Sex",
   on_med_htn = "Antihypertensive Drug",
-  current_smoke = "Current Smoking Status",
-  idaco_bp_phenotype = "Hypertension Phenotypes"
+  current_smoke = "Current Smoking Status"
 )
 
 
@@ -381,7 +380,7 @@ p1 <- grid2grob(print(all_cardio_plot))
 p2 <- grid2grob(print(all_cardio_plot_2))
 
 all_all_cardio_dia <- wrap_plots(p1, p2, nrow = 2) +
-    plot_annotation(title = "All cardiovascular events (n = 30)",
+    plot_annotation(title = "All cardiovascular events (n = 34)",
                     theme = theme(plot.title = element_text(size = 30, hjust = 0.5)))
 
 #all_all_cardio_dia
@@ -734,7 +733,7 @@ all_all_mortality_dia <- wrap_plots(p1, p2, nrow = 2) +
 all_all_plots <- ggarrange(all_all_mortality_dia, all_all_cardio_dia, ncol = 2)
 
 # Optional: Save to file
-output_dir <- file.path("..", "Manuscript", "final_manuscript_results", "Figures")
+output_dir <- file.path("results", "figures")
 
 # Check if the directory exists and create it if not
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)

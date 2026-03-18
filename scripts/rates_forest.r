@@ -18,7 +18,7 @@ library(ggplotify)
 # Define BP categorization functions for each definition
 bp_definitions <- list(
   "ESC" = function(data) {
-    data %>%
+    data |>
       mutate(
         clinic_cat = case_when(
           spot_bp_sys < 120 & spot_bp_dys < 70 ~ "Normal",
@@ -44,7 +44,7 @@ bp_definitions <- list(
       )
   },
   "ACC/AHA" = function(data) {
-    data %>%
+    data |>
       mutate(
         clinic_cat = case_when(
           spot_bp_sys < 120 & spot_bp_dys < 80 ~ "Normal",
@@ -67,7 +67,7 @@ bp_definitions <- list(
       )
   },
   "ESH/ISH" = function(data) {
-    data %>%
+    data |>
       mutate(
         clinic_cat = case_when(
           spot_bp_sys < 130 & spot_bp_dys < 85 ~ "Normal",
@@ -112,16 +112,16 @@ who_std <- tibble(
                      # The user's agecat3 for 60+ goes up to 98, which is fine if std_pop covers that.
                      # The provided std_pop has 91 values, matching age 0 to 90.
   )
-) %>%
+) |>
   mutate(agecat3 = case_when(
     age >= 18 & age <= 29 ~ "18-29",
     age >= 30 & age <= 59 ~ "30-59",
     age >= 60 & age <= 90 ~ "60+", # Aligning with max age in who_std (0-90)
     TRUE ~ NA_character_
-  )) %>%
-  filter(!is.na(agecat3)) %>% # Important: filter out NA agecat3 before summarising
-  group_by(agecat3) %>%
-  summarise(std_pop_grp = sum(std_pop, na.rm = TRUE), .groups = "drop") %>% # Renamed to avoid conflict
+  )) |>
+  filter(!is.na(agecat3)) |> # Important: filter out NA agecat3 before summarising
+  group_by(agecat3) |>
+  summarise(std_pop_grp = sum(std_pop, na.rm = TRUE), .groups = "drop") |> # Renamed to avoid conflict
   mutate(std_prop = std_pop_grp / sum(std_pop_grp, na.rm = TRUE))
 
 # Confounders for adjustment
@@ -147,7 +147,7 @@ for (def_name in names(bp_definitions)) {
     message(paste("  Measure Type:", bp_measure_label))
 
     # --- 1. Age-Standardized Rates ---
-    data_for_rates <- categorized_data_for_def %>%
+    data_for_rates <- categorized_data_for_def |>
       filter(!is.na(.data[[bp_measure_col_name]])) # Filter out NA BP categories
 
     # Proceed only if there's data for this category
@@ -162,15 +162,15 @@ for (def_name in names(bp_definitions)) {
 
 
     # Calculate rates for All-Cause Mortality
-    mortality_age_specific <- data_for_rates %>%
-      group_by(!!sym(bp_measure_col_name), agecat3) %>%
+    mortality_age_specific <- data_for_rates |>
+      group_by(!!sym(bp_measure_col_name), agecat3) |>
       summarise(
         total_person_years = sum(time_to_event, na.rm = TRUE) / 365.25,
         total_events = sum(mortality_event, na.rm = TRUE),
         total_N = n(),
         .groups = "drop"
-      ) %>%
-      left_join(who_std, by = "agecat3") %>%
+      ) |>
+      left_join(who_std, by = "agecat3") |>
       mutate(
         # Handle cases where std_prop might be NA if agecat3 doesn't match (should not happen with pre-filtering)
         std_prop = ifelse(is.na(std_prop), 0, std_prop), 
@@ -178,51 +178,51 @@ for (def_name in names(bp_definitions)) {
         std_rate_component = age_specific_rate * std_prop
       )
 
-    mortality_summary_rates <- mortality_age_specific %>%
-      group_by(!!sym(bp_measure_col_name)) %>%
+    mortality_summary_rates <- mortality_age_specific |>
+      group_by(!!sym(bp_measure_col_name)) |>
       summarise(
         mort_crude_rate = sum(age_specific_rate, na.rm = TRUE),
         mort_rate = sum(std_rate_component, na.rm = TRUE),
         mort_n = sum(total_events, na.rm = TRUE),
         mort_N = sum(total_N, na.rm = TRUE),
         .groups = "drop"
-      ) %>%
+      ) |>
       rename(bp_level = !!sym(bp_measure_col_name))
 
     # Calculate rates for All Cardiovascular Events
-    cardio_age_specific <- data_for_rates %>%
-      group_by(!!sym(bp_measure_col_name), agecat3) %>%
+    cardio_age_specific <- data_for_rates |>
+      group_by(!!sym(bp_measure_col_name), agecat3) |>
       summarise(
         total_person_years = sum(time_to_all_cardio, na.rm = TRUE) / 365.25,
         total_events = sum(all_cardio_event, na.rm = TRUE),
         total_N = n(),
         .groups = "drop"
-      ) %>%
-      left_join(who_std, by = "agecat3") %>%
+      ) |>
+      left_join(who_std, by = "agecat3") |>
       mutate(
         std_prop = ifelse(is.na(std_prop), 0, std_prop),
         age_specific_rate = ifelse(total_person_years > 0, (total_events / total_person_years) * 1000, 0),
         std_rate_component = age_specific_rate * std_prop
       )
 
-    cardio_summary_rates <- cardio_age_specific %>%
-      group_by(!!sym(bp_measure_col_name)) %>%
+    cardio_summary_rates <- cardio_age_specific |>
+      group_by(!!sym(bp_measure_col_name)) |>
       summarise(
         cvd_crude_rate = sum(age_specific_rate, na.rm = TRUE),
         cvd_rate = sum(std_rate_component, na.rm = TRUE),
         cvd_n = sum(total_events, na.rm = TRUE),
         cvd_N = sum(total_N, na.rm = TRUE),
         .groups = "drop"
-      ) %>%
+      ) |>
       rename(bp_level = !!sym(bp_measure_col_name))
 
     # Combine rates: Ensure all actual_bp_levels_in_data are present
-    rates_summary <- tibble(bp_level = actual_bp_levels_in_data) %>%
-      left_join(mortality_summary_rates, by = "bp_level") %>%
+    rates_summary <- tibble(bp_level = actual_bp_levels_in_data) |>
+      left_join(mortality_summary_rates, by = "bp_level") |>
       left_join(cardio_summary_rates, by = "bp_level")
 
     # --- 2. Adjusted Hazard Ratios ---
-    data_for_hr <- categorized_data_for_def %>%
+    data_for_hr <- categorized_data_for_def |>
       filter(!is.na(.data[[bp_measure_col_name]]))
 
     tidy_mort_hr <- tibble(bp_level = character(), mort_hr = numeric(), mort_ci_low = numeric(), mort_ci_high = numeric(), mort_hr_ci = character())
@@ -246,7 +246,7 @@ for (def_name in names(bp_definitions)) {
         data_for_hr[[bp_measure_col_name]] <- relevel(data_for_hr[[bp_measure_col_name]], ref = ref_level)
 
         # Mortality HR
-        model_data_mort <- data_for_hr %>% select(all_of(c("time_to_event", "mortality_event", bp_measure_col_name, confounders))) %>% na.omit()
+        model_data_mort <- data_for_hr |> select(all_of(c("time_to_event", "mortality_event", bp_measure_col_name, confounders))) |> na.omit()
         if (nrow(model_data_mort) > 0 && n_distinct(model_data_mort[[bp_measure_col_name]]) > 1) {
           tryCatch({
             model_mortality <- coxph(
@@ -255,8 +255,8 @@ for (def_name in names(bp_definitions)) {
                                          paste(confounders, collapse = " + "))),
               data = model_data_mort
             )
-            tidy_mort_hr <- broom::tidy(model_mortality, exponentiate = TRUE, conf.int = TRUE,) %>%
-              filter(str_starts(term, bp_measure_col_name)) %>%
+            tidy_mort_hr <- broom::tidy(model_mortality, exponentiate = TRUE, conf.int = TRUE,) |>
+              filter(str_starts(term, bp_measure_col_name)) |>
               mutate(
                 bp_level = str_remove(term, fixed(paste0(bp_measure_col_name))),
                 mort_hr = estimate,
@@ -264,7 +264,7 @@ for (def_name in names(bp_definitions)) {
                 mort_ci_high = conf.high,
                 mort_hr_ci = sprintf("%.2f (%.2f-%.2f)", estimate, conf.low, conf.high),
                 mort_p_val = format.pval(p.value, eps = 0.001, digits = 1)
-              ) %>%
+              ) |>
               select(bp_level, mort_hr, mort_ci_low, mort_ci_high, mort_hr_ci, mort_p_val)
             tidy_mort_hr <- bind_rows(
               tibble(bp_level = ref_level, mort_hr = 1, mort_ci_low = NA,
@@ -285,7 +285,7 @@ for (def_name in names(bp_definitions)) {
         }
 
         # CVD HR
-        model_data_cvd <- data_for_hr %>% select(all_of(c("time_to_all_cardio", "all_cardio_event", bp_measure_col_name, confounders))) %>% na.omit()
+        model_data_cvd <- data_for_hr |> select(all_of(c("time_to_all_cardio", "all_cardio_event", bp_measure_col_name, confounders))) |> na.omit()
         if (nrow(model_data_cvd) > 0 && n_distinct(model_data_cvd[[bp_measure_col_name]]) > 1) {
           tryCatch({
             model_cardio <- coxph(
@@ -294,8 +294,8 @@ for (def_name in names(bp_definitions)) {
                                          paste(confounders, collapse = " + "))),
               data = model_data_cvd
             )
-            tidy_cvd_hr <- broom::tidy(model_cardio, exponentiate = TRUE, conf.int = TRUE) %>%
-              filter(str_starts(term, bp_measure_col_name)) %>%
+            tidy_cvd_hr <- broom::tidy(model_cardio, exponentiate = TRUE, conf.int = TRUE) |>
+              filter(str_starts(term, bp_measure_col_name)) |>
               mutate(
                 bp_level = str_remove(term, fixed(paste0(bp_measure_col_name))),
                 cvd_hr = estimate,
@@ -303,7 +303,7 @@ for (def_name in names(bp_definitions)) {
                 cvd_ci_high = conf.high,
                 cvd_hr_ci = sprintf("%.2f (%.2f-%.2f)", estimate, conf.low, conf.high),
                 cvd_p_val = format.pval(p.value, eps = 0.001, digits = 1)
-              ) %>%
+              ) |>
               select(bp_level, cvd_hr, cvd_ci_low, cvd_ci_high, cvd_hr_ci, cvd_p_val)
             tidy_cvd_hr <- bind_rows(
               tibble(bp_level = ref_level, cvd_hr = 1, cvd_ci_low = NA,
@@ -346,11 +346,11 @@ for (def_name in names(bp_definitions)) {
     rates_summary$bp_level <- as.character(rates_summary$bp_level)
     hr_summary$bp_level    <- as.character(hr_summary$bp_level)
     
-    combined_stats_for_measure <- full_join(rates_summary, hr_summary, by = "bp_level") %>%
+    combined_stats_for_measure <- full_join(rates_summary, hr_summary, by = "bp_level") |>
       mutate(
         definition = def_name,
         bp_measurement_label = bp_measure_label
-      ) %>%
+      ) |>
       select(definition, bp_measurement_label, bp_level,
              mort_n, mort_N, mort_crude_rate, mort_rate, mort_hr, mort_ci_low, mort_ci_high, mort_hr_ci, mort_p_val,
              cvd_n, cvd_N, cvd_crude_rate, cvd_rate, cvd_hr, cvd_ci_low, cvd_ci_high, cvd_hr_ci, cvd_p_val)
@@ -367,14 +367,14 @@ all_possible_bp_levels <- c("Normal", "Elevated BP", "Hypertension")
 final_combined_data$bp_level <- factor(final_combined_data$bp_level, levels = all_possible_bp_levels)
 
 # Arrange data
-final_combined_data <- final_combined_data %>%
-  arrange(definition, bp_measurement_label, bp_level) %>%
+final_combined_data <- final_combined_data |>
+  arrange(definition, bp_measurement_label, bp_level) |>
   filter(!is.na(bp_level))
 
 # --- Create Forest Plots ---
 
 # Add combined label for plotting
-final_combined_data <- final_combined_data %>%
+final_combined_data <- final_combined_data |>
   mutate(
     label = paste(definition, bp_measurement_label, bp_level, sep = " - ")
   )
@@ -383,9 +383,9 @@ final_combined_data <- final_combined_data %>%
 
 create_forest_plot <- function(data, definition, outcome = "mort") { #Change outcome to "cvd" for CVD plots
   # Filter data for the specific definition
-  plot_data <- data %>%
-    filter(definition == !!definition) %>%
-    filter(!is.na(.data[[paste0(outcome, "_hr")]])) %>%
+  plot_data <- data |>
+    filter(definition == !!definition) |>
+    filter(!is.na(.data[[paste0(outcome, "_hr")]])) |>
     mutate(
       n_text = as.character(.data[[paste0(outcome, "_n")]]),  # Number of events
       N_text = as.character(.data[[paste0(outcome, "_N")]]),  # Total N
@@ -397,17 +397,17 @@ create_forest_plot <- function(data, definition, outcome = "mort") { #Change out
       upper_plot = if_else(is.na(.data[[paste0(outcome, "_ci_high")]]), .data[[paste0(outcome, "_hr")]], .data[[paste0(outcome, "_ci_high")]]),
       hr_ci = as.character(.data[[paste0(outcome, "_hr_ci")]]),
       pval_text = as.character(.data[[paste0(outcome, "_p_val")]]),
-    ) %>%
+    ) |>
     arrange(bp_measurement_label, bp_level)
 
   # Add a new column for labels with indentation
   unique_measures <- unique(plot_data$bp_measurement_label)
-  plot_data <- plot_data %>%
-    group_by(bp_measurement_label) %>%
+  plot_data <- plot_data |>
+    group_by(bp_measurement_label) |>
     mutate(
     label = if_else(row_number() == 1, paste0(bp_measurement_label, "-", bp_level),
                        paste0("  ", bp_level))
-  ) %>%
+  ) |>
   ungroup()
 
 
@@ -486,7 +486,7 @@ combined_plot <- wrap_plots(
 )
 
 # Optional: Save to file
-output_dir <- file.path("..", "Manuscript", "final_manuscript_results", "Figures")
+output_dir <- file.path("results", "figures")
 
 # Check if the directory exists and create it if not
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
@@ -517,7 +517,7 @@ combined_plot <- wrap_plots(
 )
 
 # Optional: Save to file
-output_dir <- file.path("..", "Manuscript", "final_manuscript_results", "Figures")
+output_dir <- file.path("results", "figures")
 
 # Check if the directory exists and create it if not
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)

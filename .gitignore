@@ -2,6 +2,7 @@
 
 #Scripts to be ignored
 scripts/check_data_types.r
+scripts/temp_analysis.rmd
 # The data file
 data/
 

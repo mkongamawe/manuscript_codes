@@ -43,3 +43,6 @@ source("scripts/poisson_reg.r")
 # Association of BP with mortality and CV events (Poisson regression) - no interpolation
 # Ensure to run the project master file with no imputation and change labels correctly
 source("scripts/poisson_reg.r")
+
+# Rates forest plots
+source("scripts/rates_forest.r")
