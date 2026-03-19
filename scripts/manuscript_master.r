@@ -35,7 +35,7 @@ source("scripts/new_forest_plot_residual.r")
 source("scripts/new_forest_plot_sensitivity_1year.r")
 
 # Association of BP with mortality and CV events (Cox regression) - per 1/2 SD
-source("scripts/new_forest_plot_SD_increment.r")
+source("scripts/new_forest_plot_half_SD_increment.r")
 
 # Association of BP with mortality and CV events (Poisson regression)
 source("scripts/poisson_reg.r")
@@ -46,3 +46,10 @@ source("scripts/poisson_reg.r")
 
 # Rates forest plots
 source("scripts/rates_forest.r")
+
+# To determine the interaction between attended and unattended
+# Clinic blood pressure methods
+source("scripts/sensitivity_att_unatt.r")
+
+# To determine the post-hoc power of the models
+source("scripts/post_hoc_power_cox.r")
