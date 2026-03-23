@@ -20,22 +20,6 @@ filtered_out <- project_master_1 %>%
    filter(is.na(age) | is.na(bmi) | is.na(on_med_htn) | is.na(current_smoke) |
          idaco_good != 1 | is.na(idaco_night_sbpbr) | is.na(idaco_night_dia) | is.na(idaco_day_sbpbr) | is.na(idaco_day_dia) |
          is.na(spot_bp_dys) | is.na(spot_bp_sys))
-# ####################################
-# filtered_out <- project_master_1 %>%
-#   select("pk_person", "updated_time", "sex", "age", "agegrp", "height", "weight", #Delete updated time from this.
-#           "bmi", "muac", starts_with("idaco"), "spot_bp_sys", "spot_bp_dys", "spot_pulse", "prev_diag_htn",
-#           "on_med_htn", "current_smoke", "a1c", "self_dm", "dob", "agecat5", "agecat3", "study") %>%
-#   mutate(
-#     age = ifelse(is.na(age),
-#                  trunc(interval(dob, updated_time) / years(1)),
-#                  age),
-#     bmi = ifelse(is.na(bmi),
-#                  round((weight) / ((height / 100)^2), 2),
-#                  bmi)
-#  ) %>%
-#    filter(if_any(c("pk_person", "updated_time", "sex", "age", "agegrp", "height", "weight", #Delete updated time from this.
-#           "bmi", "muac", starts_with("idaco"), "spot_bp_sys", "spot_bp_dys", "spot_pulse", "prev_diag_htn",
-#           "on_med_htn", "current_smoke", "a1c", "self_dm", "dob", "agecat5", "agecat3", "study"), is.na))
 
 ####################################
 # Filter rows where pk_person has duplicates and resolve conflicts
@@ -71,10 +55,6 @@ night_weight <- 40 / (20 + 40)
 filtered_out_1$idaco_sbpbr_avg <- round((filtered_out_1$idaco_day_sbpbr * day_weight) + (filtered_out_1$idaco_night_sbpbr * night_weight))
 filtered_out_1$idaco_dia_avg <- round((filtered_out_1$idaco_day_dia * day_weight) + (filtered_out_1$idaco_night_dia * night_weight))
 
-#filtered_out_1$idaco_pwvao_avg <- round((filtered_out_1$idaco_day_pwvao * day_weight) + (filtered_out_1$idaco_night_pwvao * night_weight))
-# filtered_out_1$esh_sbpbr_avg <- round((filtered_out_1$esh_day_sbpbr * day_weight) + (filtered_out_1$esh_night_sbpbr * night_weight))
-# filtered_out_1$esh_dia_avg <- round((filtered_out_1$esh_day_dia * day_weight) + (filtered_out_1$esh_night_dia * night_weight))
-
 
 filtered_out_2 <- filtered_out_1 %>%
   mutate(
@@ -102,19 +82,6 @@ filtered_out_2 <- filtered_out_2 %>%
             TRUE ~ "no"
         )
     )
-
-# filtered_out_2 <- filtered_out_2 %>%
-#     mutate(
-#         esh_bp_phenotype = case_when(
-#             esh_good == 1 & spot_bp_sys < 140 & spot_bp_dys < 90 & esh_sbpbr_avg < 130 & esh_dia_avg < 80 ~ "Normotensive",
-#             esh_good == 1 & (spot_bp_sys >= 140 | spot_bp_dys >= 90) & esh_sbpbr_avg < 130 & esh_dia_avg < 80 ~ "White Coat Hypertensive",
-#             esh_good == 1 & spot_bp_sys < 140 & spot_bp_dys < 90 & (esh_sbpbr_avg >= 130 | esh_dia_avg >= 80) ~ "Masked Hypertension",
-#             esh_good == 1 & (spot_bp_sys >= 140 | spot_bp_dys >= 90) & (esh_sbpbr_avg >= 130 | esh_dia_avg >= 80) ~ "Sustained Hypertensive",
-#             TRUE ~ NA_character_
-#         )
-#     )
-view(filtered_out_2)
-table(filtered_out_1["sex"])
 
 levels(filtered_out_2$prev_diag_htn)[levels(filtered_out_2$prev_diag_htn) == ""] <- "No"
 levels(filtered_out_2$on_med_htn)[levels(filtered_out_2$on_med_htn) == ""] <- "No"
@@ -201,3 +168,58 @@ filtered_out_5 <- rbind(filtered_out_3, filtered_out_4) |>
       TRUE ~ NA
     )
   )
+
+############################################
+drop_table_1 <- filtered_out_3 %>%
+    select(sex, age, agecat3, bmi, on_med_htn,
+         current_smoke, a1c, sod_pot, idaco_day_sbpbr, idaco_day_dia,
+         idaco_night_sbpbr, idaco_night_dia, spot_bp_sys,
+         spot_bp_dys, idaco_sbpbr_avg,
+         idaco_dia_avg) %>%
+  mutate(#vital_status = as.factor(vital_status),
+         weight = case_when(bmi < 18.5 ~ "Underweight",
+                            bmi > 24.9 ~ "Overweight",
+                            TRUE ~ "Normal"),
+         diabetes_status = case_when(
+           a1c >= 6.5 ~ "yes",
+           TRUE ~ "no"),
+         agecat = case_when(
+           age < 45 ~ "<45",
+           age >= 45 & age < 70 ~ "45-69",
+           age >= 60 ~ "70+"
+         )) |>
+  select(sex, age, agecat, weight, on_med_htn,
+         current_smoke, diabetes_status, sod_pot, idaco_day_sbpbr, idaco_day_dia,
+         idaco_night_sbpbr, idaco_night_dia, spot_bp_sys,
+         spot_bp_dys, idaco_sbpbr_avg,
+         idaco_dia_avg)
+
+drop_table_1 %>%
+    tbl_summary(
+        #by = sex,
+        missing = "ifany",
+        statistic = list(all_continuous() ~ "{mean} ({sd})",
+                         age ~ "{median} ({p25}, {p75})",
+                         sod_pot ~ "{median} ({p25}, {p75})"),
+        label = list(
+            age = "Age", agecat = "Age Categories", weight = "BMI",on_med_htn = "On Hypertension Medicine", current_smoke = "Current Smoker", diabetes_status = "Diabetes status", sod_pot = "Urine Na to K ratio",
+            idaco_day_sbpbr = "Daytime Systolic", idaco_night_sbpbr = "Nighttime Systolic",
+            idaco_day_dia = "Daytime Diastolic", idaco_night_dia = "Nighttime Diastolic",
+            spot_bp_sys = "Clinical Systolic", spot_bp_dys = "Clinical Diastolic",
+            idaco_sbpbr_avg = "24-h Systolic", idaco_dia_avg = "24-h Diastolic",
+            idaco_bp_phenotype = "Hypertension Phenotypes"
+        )
+    ) %>%
+    #add_overall(col_label = "All Participants") %>%
+    add_variable_grouping(
+        "Risk Factors" = c("weight", "on_med_htn", "current_smoke", "diabetes_status", "sod_pot")
+    ) %>%
+    add_variable_grouping(
+        "Blood Pressure" = c("idaco_day_sbpbr","idaco_night_sbpbr", "idaco_night_dia",
+        "idaco_day_dia", "spot_bp_sys", "spot_bp_dys", "idaco_sbpbr_avg", "idaco_dia_avg")
+    ) %>%
+    as_gt() %>%
+    tab_header(
+        title = md("**Characteristics of excluded participants**")
+    ) %>%
+   gt::gtsave(filename = "drop_table_1.docx", path = "results/tables")

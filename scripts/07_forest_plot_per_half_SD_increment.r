@@ -387,7 +387,7 @@ all_all_mortality_sys_dia <- wrap_plots(p1, p2, nrow = 2) +
 
 ################################
 
-ggsave("New all mortality per half SD.png",
+ggsave("all mortality per half SD.png",
        path = "results/figures",
        height = 30, width = 30, units = "cm",
        dpi = 400)
@@ -740,7 +740,7 @@ all_all_cardio_dia <- wrap_plots(p1, p2, nrow = 2) +
     plot_annotation(title = "All cardiovascular events (n = 39)",
                     theme = theme(plot.title = element_text(size = 30, hjust = 0.5)))
 
-ggsave("New all cardiovascular per half SD.png",
+ggsave("all cardiovascular per half SD.png",
        path = "results/figures",
        height = 30, width = 30, units = "cm",
        dpi = 400)

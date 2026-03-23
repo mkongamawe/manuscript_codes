@@ -12,22 +12,27 @@ updated_combined_data <- readr::read_csv(
 )[, -1]
 
 # Add the residuals and z-scores
-source("scripts/residual_calc.r")
-
-# Create a file for the dropped participants
-source("scripts/dropped_participants.r")
+source("scripts/01_residual_calc.r")
 
 # Create table 1 and table for those not analysed
-# Bstfun package no longer available. Need to adapt code.
-source("scripts/table1_v2.r")
+source("scripts/02_table1.r")
 
-# Prognostic sensitivity results
-source("scripts/sensitivity tables_graph.R")
+# Create a file for the dropped participants
+source("scripts/03_dropped_participants.r")
 
 # Creating Nelson-Aalen plots
-source("scripts/rates_nelson_aalen.r")
+source("scripts/04_rates_nelson_aalen.r")
+
+# Prognostic sensitivity results
+source("scripts/05_prognostic_sensitivity_table_graph.r")
+source("scripts/06_bp_kernel_density.r")
+
+# Mortality proportions per BP category
+source("scripts/07_mortality_proportions.r")
 
 # Creating forestplots
+source("scripts/07_forest_plot_per_half_SD_increment.r") # To continue from here
+
 # Association of BP with mortality and CV events (Cox regression)
 source("scripts/new_forest_plot_residual.r")
 

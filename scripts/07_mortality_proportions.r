@@ -167,9 +167,9 @@ create_guideline_plot_with_legend <- function(guideline) {
 plot_list <- map(unique(names(bp_definitions)), create_guideline_plot)
 
 #  Display plots in sequence
-print(plot_list[[1]])  # ESC
-print(plot_list[[2]])  # ACC/AHA
-print(plot_list[[3]])  # ESH & ISH
+# print(plot_list[[1]])  # ESC
+# print(plot_list[[2]])  # ACC/AHA
+# print(plot_list[[3]])  # ESH & ISH
 
 p1 <- plot_list[[1]] # ESC
 p2 <- plot_list[[2]] # ACC/AHA
@@ -207,7 +207,7 @@ grid.draw(legend_grob)
 grid::grid.draw(legend_grob)
 
 
-print(legend_grob)
+# print(legend_grob)
 # Optional: Arrange all plots together if needed
 # library(patchwork)
 # wrap_plots(plot_list)
@@ -226,12 +226,12 @@ combined_plot <- wrap_plots(p1,p2,p3,legend_plot,ncol = 3) +
 
 # --- 8. Print and save combined plot ---
 
-print(combined_plot)  # Ensure plot displays in scripts/non-interactive sessions
+# print(combined_plot)  # Ensure plot displays in scripts/non-interactive sessions
 
 ggsave(
-    filename = "..\\Manuscript\\final_manuscript_results\\Figures",
+    filename = "results/figures/mortality_proportions.png",
     plot = combined_plot,
-    device = "pdf",
+    device = "png",
     width = 15,
     height = 12
 )

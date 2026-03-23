@@ -1,3 +1,5 @@
+library(tidyverse)
+
 #Calculating residuals for 24 hr BP components.
 model1 <- lm(idaco_sbpbr_avg ~ spot_bp_sys, data = updated_combined_data)
 model2 <- lm(idaco_day_sbpbr ~ spot_bp_sys, data = updated_combined_data)
