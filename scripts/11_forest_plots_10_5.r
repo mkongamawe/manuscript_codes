@@ -735,8 +735,7 @@ all_all_mortality_sys_dia <- wrap_plots(p1, p2, nrow = 2) +
 #Combining all plots
 all_all_plots <- ggarrange(all_all_mortality_sys_dia, all_all_cardio_dia, ncol = 2)
 
-ggsave("New all mortality cardio.svg",
+ggsave("New all mortality cardio.png",
        path = "results/figures",
        height = 30, width = 60, units = "cm",
        dpi = 400)
-

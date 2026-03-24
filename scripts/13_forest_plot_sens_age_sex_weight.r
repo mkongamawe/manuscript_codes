@@ -174,7 +174,7 @@ prepare_forest_data <- function(combined_df) {
       mutate(
         plot_pch = if_else(group == "Overall", 18, shape_map[group])
       )
-  browser()
+  #browser()
 
   out_data
 }
@@ -299,7 +299,7 @@ if(include_cardio) {
 }
 
 # Create output directory
-output_dir <- file.path("..", "Manuscript", "final_manuscript_results", "Figures")
+output_dir <- file.path("results", "figures")
 if(!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = TRUE)
 }

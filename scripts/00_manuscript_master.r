@@ -20,34 +20,37 @@ source("scripts/02_table1.r")
 # Create a file for the dropped participants
 source("scripts/03_dropped_participants.r")
 
+# Visualise the correlation of BP measurements
+source("scripts/04_correlation.r")
+
 # Creating Nelson-Aalen plots
-source("scripts/04_rates_nelson_aalen.r")
+source("scripts/05_rates_nelson_aalen.r")
 
 # Prognostic sensitivity results
-source("scripts/05_prognostic_sensitivity_table_graph.r")
-source("scripts/06_bp_kernel_density.r")
+source("scripts/06_prognostic_sensitivity_table_graph.r")
+source("scripts/07_bp_kernel_density.r")
 
 # Mortality proportions per BP category
-source("scripts/07_mortality_proportions.r")
+source("scripts/08_mortality_proportions.r")
+
+# Rates by BP categories
+source("scripts/09_rates_forest_plot.r")
 
 # Creating forestplots
-source("scripts/07_forest_plot_per_half_SD_increment.r") # To continue from here
+# Association of BP with mortality and CV events (Cox regression) - per 1/2 SD
+source("scripts/10_forest_plot_per_half_SD_increment.r")
 
-# Association of BP with mortality and CV events (Cox regression)
-source("scripts/new_forest_plot_residual.r")
+# Association of BP with mortality and CV events per 10/5 mmHg
+source("scripts/11_forest_plots_10_5.r")
 
 # Association of BP with mortality and CV events (Cox regression) - 1 year sensitivity
-source("scripts/new_forest_plot_sensitivity_1year.r")
+source("scripts/12_forest_plot_1year_sens.r")
 
-# Association of BP with mortality and CV events (Cox regression) - per 1/2 SD
-source("scripts/new_forest_plot_half_SD_increment.r")
+# Association of BP with mortality - Age/Sex/Weight sensitivities
+source("scripts/13_forest_plot_sens_age_sex_weight.r")
 
-# Association of BP with mortality and CV events (Poisson regression)
-source("scripts/poisson_reg.r")
-
-# Association of BP with mortality and CV events (Poisson regression) - no interpolation
-# Ensure to run the project master file with no imputation and change labels correctly
-source("scripts/poisson_reg.r")
+# Checking the AUCs of BP measurements
+source("scripts/14_roc_curve.r")
 
 # Rates forest plots
 source("scripts/rates_forest.r")

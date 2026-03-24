@@ -8,12 +8,10 @@ library(ggplot2)
 library(broom)
 library(gtsummary)
 library(patchwork)
-##library(forestmodel)
 library(labelled)
 library(forestplot)
 library(broom)
 library(ggplotify)
-##library(ggpubr)
 
 # Define BP categorization functions for each definition
 bp_definitions <- list(
@@ -492,7 +490,7 @@ output_dir <- file.path("results", "figures")
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
 
 # Save the plot
-ggsave(file.path(output_dir, "Mortality_rates_forest_plots.png"), combined_plot, width = 15, height = 10)
+ggsave(file.path(output_dir, "mortality_rates_forest_plots.png"), combined_plot, width = 15, height = 10)
 
 #----------------------------------#
 # Initialize an empty list to store the plots for cvd
