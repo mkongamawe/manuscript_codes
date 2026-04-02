@@ -20,7 +20,7 @@
 
 Title:  Improving Hypertension Control in Rural sub-Saharan Africa (IHCoR Africa)
 
-Dates: [project start-end] 
+Dates: 2023 - 2025
 
 SSC/Protocol No:
 
@@ -29,9 +29,7 @@ Description of the related research project:
 Funding organisation:  Wellcome (22713/Z/23/Z, 103951/Z/14/Z), Kenya Medical Research Institute (KEMRI/GRG/15/09), National Institute of Health and Care Research (NIHR 134544), Science for Africa Foundation DELTAS Africa programme (DEL-22-012).
 
 Grant no.:  
-
-[Include in this section aknowledgements of all relevant funding sources, including e.g. 
-public and charitable funders, industrial sponsors, and the institution]  
+ 
 
 
 # 2. DATASET 
@@ -51,11 +49,11 @@ Contact information:
 - Clement Mwagwabi: cmwagwabi@kemri-wellcome.org
 - Anthony O. Etyang: aetyang@kemri-wellcome.org
 
-Source(s): [If applicable, provide citations/links to data derived from other sources] 
+Source(s): NA
 
-Subject: Medicine, Health and Life Sciences/Social Sciences/Other-specify
+Subject: Medicine
 
-Keywords:
+Keywords: Hypertension, Ambulatory blood pressure monitoring
 
 
 # 3. TERMS OF USE/DATA ACCESS 
@@ -271,11 +269,11 @@ The full codebook is provided in `data/manuscript_codebook.xlsx`. Key variables 
 
 # 6. RELATED DATASET(S)
 -------------------
-[If you used existing data for your analysis that are not readily available, you are encouraged to submit the data for archiving with the permission of the original data producer. For datasets that are a combination of primary and existing data, you are encouraged to submit the whole dataset. In situations where the access to the existing data is not permitted, provide clear descriptionof the data and indicate how and where users can find or request for the same.]
+NA
 
 
 # 7. RELATED PUBLICATION(S)
 -------------------------- 
-[Include citations of publications that reported findings using these data]
+In progress.
 
 

@@ -2,6 +2,7 @@ library(patchwork)
 library(ggpubr)
 library(ggcorrplot)
 library(ggtext)
+library(gt)
 ################################################################################
 
 correlation_result <- as.data.frame((round(cor(updated_combined_data[,
@@ -9,7 +10,6 @@ correlation_result <- as.data.frame((round(cor(updated_combined_data[,
            "spot_bp_dys", "idaco_dia_avg", "idaco_day_dia", "idaco_night_dia")],
         use = "complete.obs"), 2)))
 
-view(correlation_result)
 
 correlation_result %>%
     gt(rownames_to_stub = TRUE) %>%
@@ -40,13 +40,11 @@ correlation_result %>%
     tab_footnote(
         footnote = "SBP - Systolic Blood pressure, DBP - Diastolic Blood Pressure",
         locations = cells_stub(rows = c(1, 5))
-    ) #%>%
-    #gtsave(filename = "Correlation_main.docx", path = "C:\\Users\\cmwagwabi\\OneDrive - Kemri Wellcome Trust\\Documents - Anthony Etyang's files\\ABPM and HDSS events Data_Shared with Clement\\Project Folder - Clement\\Manuscript\\Results")
-
+    )
 ##########################################################################################
 #Correlation plot.
 
-#relaballing columns
+# #relaballing columns
 custom_labels <- list(
   spot_bp_sys = "Clinic SBP",
   spot_bp_dys = "Clinic DBP",
@@ -120,10 +118,10 @@ scale_y_discrete(labels = custom_labels) +
     title = "Correlation of blood pressure indices."
   )
 
-  ggsave("Correlation_matrix.png",
-       path = "results/figures",
-       height = 20, width = 20,
-       dpi = 400)
+ggsave("Correlation_matrix.png",
+      path = "results/figures",
+      height = 20, width = 20,
+      dpi = 400)
 
 ################################
 # -- Compare correlation after residualisation
@@ -152,24 +150,24 @@ common_theme <- theme_minimal() +
 # Define the pairs of variables to plot
 var_pairs <- list(
   list(
-    y_var = "idaco_dia_avg",
-    res_var = "idaco_dia_avg_res1",
+    y_var = "idaco_sbpbr_avg",
+    res_var = "idaco_sbpbr_avg_res1",
     title = "Correlation between Clinic SBP and 24h SBP",
     y_label = "24h SBP (mmHg)",
     res_title = "Residuals from regression of 24h SBP on Clinic SBP",
     res_y_label = "Residuals of 24h SBP"
   ),
   list(
-    y_var = "idaco_day_dia",
-    res_var = "idaco_day_dia_res1",
+    y_var = "idaco_day_sbpbr",
+    res_var = "idaco_day_sbpbr_res1",
     title = "Correlation between Clinic SBP and Daytime SBP",
     y_label = "Daytime SBP (mmHg)",
     res_title = "Residuals from regression of Daytime SBP on Clinic SBP",
     res_y_label = "Residuals of Daytime SBP"
   ),
   list(
-    y_var = "idaco_night_dia",
-    res_var = "idaco_night_dia_res1",
+    y_var = "idaco_night_sbpbr",
+    res_var = "idaco_night_sbpbr_res1",
     title = "Correlation between Clinic SBP and Nighttime SBP",
     y_label = "Nighttime SBP (mmHg)",
     res_title = "Residuals from regression of Nighttime SBP on Clinic SBP",
@@ -191,13 +189,13 @@ for (i in seq_along(var_pairs)) {
   res_y_label <- var_pairs[[i]]$res_y_label
   
   # Calculate Pearson correlation for main plot
-  cor_coefs <- cor.test(updated_combined_data$spot_bp_dys, 
+  cor_coefs <- cor.test(updated_combined_data$spot_bp_sys, 
                         updated_combined_data[[y_var]], 
                         method = "pearson")
   
   # Create main scatter plot
   p <- updated_combined_data %>%
-    ggplot(aes(x = spot_bp_dys, y = .data[[y_var]])) +
+    ggplot(aes(x = spot_bp_sys, y = .data[[y_var]])) +
     geom_point(colour = "blue") +
     geom_smooth(method = "lm", color = "#d70505") +
     labs(
