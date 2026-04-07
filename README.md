@@ -60,7 +60,7 @@ Keywords: Hypertension, Ambulatory blood pressure monitoring
 ------------------------------  
 The data is open access with access granted by the data governance committee of Kemri-Wellcome Trust upon reasonable request.
 
-[By default, files will be uploaded under Creative Commons CC By 4.0 License. Indicate if you would like to use an alternate license or custom data use agreement.]
+Files will be uploaded under Creative Commons CC By 4.0 License.
 
 
 # 4. CONTENTS 
@@ -115,18 +115,45 @@ manuscript_codes/
 
 # 5. METHOD and PROCESSING 
 --------------------------  
-[This section should describe how content in the Dataset was generated. This should list 
-equipment, hardware/software (including version), algorithms, formulae, experimental
-procedures/protocols, how data have been altered or processed (e.g. normalised), etc. 
+## Title of manuscript
+Prognostic Value of Clinic and Ambulatory Blood Pressure Measurements for All-cause Mortality in Rural Kenya: A Population based cohort study
 
-If this information is available in a separate document, it should be referenced, or 
-stored together with the data. Associated articles or other publications should not be 
-included in the Dataset, but a citation can be included here and direct links can be added 
-to the Related resources and Associated  publications fields in the metadata record. 
+## Authors:
+- Nyiro C. Mwagwabi, B.Sc
+- Ruth Lucinde, MD, MMed
+- Juliet Otieno, MD
+- Aurelia Brazeal, MD
+- Elminah Saru, B.Sc
+- Catherine Kalu, B.Sc
+- Robinson Oyando, M.Sc
+- Nadia Aliyan, MD
+- Tim Clayton, M.Sc
+- Modou Jobe, MD, PhD
+- Rob Peck, MD, PhD
+- Sam Kinyanjui, PhD
+- Osman Abdullahi, PhD
+- Antipa Sigilai, B.Sc
+- Nelson Ouma, B.Sc
+- David Walumbe, MPH
+- Mark Otiende, M.Sc
+- Amek Nyaguara, PhD
+- J. Anthony G. Scott, FRCP, FMedSci
+- Thomas N. Williams, FMEdSci
+- Benjamin Tsofa, PhD
+- Sophie Uyoga, PhD
+- Edwine Barasa, PhD
+- Elijah Ogola, MD5
+- David Leon, PhD
+- Alexander Perkins M.Sc
+- Adrianna Murphy, PhD
+- Emily Herrett, PhD
+- Anoop Shah, MD, PhD
+- Pablo Perel, MD, PhD
+- Anthony O. Etyang, MD, PhD
 
-If a publication is in preparation at the time of deposit, provide relevant details where 
-known (authors, title, journal, etc.) and indicate status at time of deposit 
-(In preparation, In press, published).]
+## Status
+In preparation
+
 ## Data Preprocessing Pipeline (Not Included)
 
 The analysis-ready dataset was generated from multiple raw source files through scripts that are **not included** in this package because they require raw identifiable KHDSS data. For reference, the preprocessing pipeline was:
