@@ -1,9 +1,7 @@
 .gitignore
 
 #Scripts to be ignored
-scripts/check_data_types.r
-scripts/temp_analysis.rmd
-scripts/bash_temp.sh
+scripts/[!0-9]*
 # The data file
 data/
 

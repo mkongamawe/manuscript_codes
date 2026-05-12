@@ -202,7 +202,7 @@ source("scripts/00_manuscript_master.r")
 | `08_mortality_proportions.R` | Supports Figure 2 (Panel A) | Mortality proportions by BP category |
 | `07_bp_kernel_density` | Figure 2 (Panel B) | Kernel Density plots of Clinic BP and Nighttime BP |
 | `09_rates_forest_plot.r` | Figures S4, S5 | Crude and age-standardised mortality/CV event rates by BP category with forest plots |
-| `10_forest_plot_per_half_SD_increment.r` | Figure 3, Figure S9 | Primary Cox models: HR per ½ SD for all BP indices, Model 1 (confounder-adjusted) and Model 2 (residualized) |
+| `10_forest_plot_per_half_SD_increment.r` | Figure 3, Figure S6, S7 | Primary Cox models: HR per ½ SD for all BP indices, Model 1 (confounder-adjusted) and Model 2 (residualized) |
 | `11_forest_plots_10_5.r ` | Figure S12 | Residualized Cox models per 10 mmHg SBP / 5 mmHg DBP |
 | `12_forest_plot_1year_sens.r ` | Figure S11 | Sensitivity analysis excluding first-year deaths |
 | `3_forest_plot_sens_age_sex_weight.r` | Figures S8, S9, S10 | Stratified analyses by age (<45, 45–69, ≥70), sex, and BMI; interaction tests |
@@ -277,6 +277,12 @@ The full codebook is provided in `data/manuscript_codebook.xlsx`. Key variables 
 | `admission` | Whether participant was ever admitted (1=Yes, 2=No) | integer |
 | `outmigration` | Whether participant outmigrated (1=Yes, NA=No) | integer |
 | `date_obs` | Date of outmigration | date |
+| `resp_event` | Mortality due to respiratory disease (1/0) | integer |
+| `resp_death` | Date of death due to respiratory disease | date |
+| `resp_admission` | Hospital admission date for respiratory illness (ICD-10 J00-J46) | date |
+| `time_to_all_resp` | Follow-up to respiratory event or censoring (days) | numeric |
+| `all_resp_event` | Composite respiratory event: respiratory admission or respiratory death (1/0) | integer |
+
 
 ### Hospital Admission Variables (up to 4 admissions)
 
