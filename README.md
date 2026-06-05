@@ -204,9 +204,10 @@ source("scripts/00_manuscript_master.r")
 | `10_forest_plot_per_half_SD_increment.r` | Figure 3, Figure S6, S7 | Primary Cox models: HR per ½ SD for all BP indices, Model 1 (confounder-adjusted) and Model 2 (residualized) |
 | `11_forest_plots_10_5.r ` | Figure S12 | Residualized Cox models per 10 mmHg SBP / 5 mmHg DBP |
 | `12_forest_plot_1year_sens.r ` | Figure S11 | Sensitivity analysis excluding first-year deaths |
-| `3_forest_plot_sens_age_sex_weight.r` | Figures S8, S9, S10 | Stratified analyses by age (<45, 45–69, ≥70), sex, and BMI; interaction tests |
+| `13_forest_plot_sens_age_sex_weight.r` | Figures S8, S9, S10 | Stratified analyses by age (<45, 45–69, ≥70), sex, and BMI; interaction tests |
 | `14_roc_curve.r` | Table S6 | ROC AUCs of the various BP measurements |
-| `15_bp_measure_interaction.r` | Table S3 | BP × measurement method interaction test; clinic measurement method interaction |
+| `15_bp_measure_interaction.r` | Table S4 | BP × measurement method interaction test; clinic measurement method interaction |
+| `16_bp_informativeness.r` | Table S3 | Relative informativeness of BP based on $\chi^2$ test |
 ---
 
 ## Variable Dictionary
