@@ -223,34 +223,35 @@ p <- ggplot(sensitivity_long, aes(x = Measurement, y = Sensitivity, color = Meas
                         "Nighttime" = "#e31a1c",
                         "Daytime" = "#33a02c",
                         "Clinic" = "#ff7f00")
-    
-q <- ggplot(specificity_long, aes(x = Measurement, y = Specificity, color = Measurement)) +
-        geom_point(size = 3,shape=15) +
-        geom_errorbar(aes(ymin = CI_Lower, ymax = CI_Upper), width = 0.1) +
-        facet_wrap(~Definition, ncol = 2) +
-        labs(
-            title = "Prognostic Specificity by Measurement Method",
-            x = "Measurement Method", y = "Specificity (%)"
-        ) +
-        scale_colour_manual(values = custom_colors) +
-        theme_minimal(base_size = 13) +
-        theme(# Set overall plot appearance
-                plot.background = element_rect(fill = "white"),
-                panel.background = element_rect(fill = "white"),
-                panel.grid.major = element_line(colour = "white", size = 0.4),
-                panel.grid.minor = element_blank(),
+
+# # Code is commented out because it plots specificity
+# q <- ggplot(specificity_long, aes(x = Measurement, y = Specificity, color = Measurement)) +
+#         geom_point(size = 3,shape=15) +
+#         geom_errorbar(aes(ymin = CI_Lower, ymax = CI_Upper), width = 0.1) +
+#         facet_wrap(~Definition, ncol = 2) +
+#         labs(
+#             title = "Prognostic Specificity by Measurement Method",
+#             x = "Measurement Method", y = "Specificity (%)"
+#         ) +
+#         scale_colour_manual(values = custom_colors) +
+#         theme_minimal(base_size = 13) +
+#         theme(# Set overall plot appearance
+#                 plot.background = element_rect(fill = "white"),
+#                 panel.background = element_rect(fill = "white"),
+#                 panel.grid.major = element_line(colour = "white", size = 0.4),
+#                 panel.grid.minor = element_blank(),
             
-            axis.line = element_line(color = "black"),
-            #Set strip text appearance
-            strip.background = element_rect(fill = "oldlace"),
-            strip.text = element_markdown(face = "bold", colour = "black",
-                                        size = 15),
-            legend.position = "none",
-            plot.title = element_text(hjust = 0.5,vjust = 0.5)  # center the title
-        )
+#             axis.line = element_line(color = "black"),
+#             #Set strip text appearance
+#             strip.background = element_rect(fill = "oldlace"),
+#             strip.text = element_markdown(face = "bold", colour = "black",
+#                                         size = 15),
+#             legend.position = "none",
+#             plot.title = element_text(hjust = 0.5,vjust = 0.5)  # center the title
+#         )
     
-comb <- wrap_plots(p, q, nrow = 2) +
-        plot_layout(guides = "collect")
+# comb <- wrap_plots(p, q, nrow = 2) +
+#         plot_layout(guides = "collect")
 
     ggsave("prognostic_sensitivity_plot_main.png",
         height = 8, width = 10,

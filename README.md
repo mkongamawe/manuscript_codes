@@ -196,7 +196,6 @@ source("scripts/00_manuscript_master.r")
 | `02_table1.r` | Table 1, Tables S1a, S1b | Baseline characteristics overall and stratified by vital status; excluded participant comparison |
 | `03_dropped_participants.r` | Table S1a, Figure S1 | Characterisation of participants excluded from analysis; flow chart numbers |
 | `04_correlation.r` | Figure S2, S3 | The correlation coefficients of various blood pressure measurements before (Figure S2) and after (Figure S3) residualization |
-| `04_centile_analysis.r` | Supplementary | Cox regression at each BP centile (5th–95th) identifying significant threshold |
 | `05_rates_nelson_aalen.r` | Figure 1 | Nelson-Aalen cumulative mortality by HTN category (ESC, ESH/ISH, ACC/AHA)|
 | `06_prognostic_sensitivity_table_graph.r` | Figure 2 (Panel A), Table S7 | Prognostic sensitivity and specificity by BP index and guideline |
 | `08_mortality_proportions.R` | Supports Figure 2 (Panel A) | Mortality proportions by BP category |
