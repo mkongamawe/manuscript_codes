@@ -21,9 +21,17 @@ idaco_night_dia_res1 <- residuals(model7)
 spot_bp_dys_res1 <- residuals(model8)
 
 
-updated_combined_data <- cbind(updated_combined_data, idaco_sbpbr_avg_res1, idaco_day_sbpbr_res1,
-                               idaco_night_sbpbr_res1, spot_bp_sys_res1, idaco_dia_avg_res1,
-                               idaco_day_dia_res1, idaco_night_dia_res1, spot_bp_dys_res1)
+updated_combined_data <- cbind(
+  updated_combined_data,
+  idaco_sbpbr_avg_res1,
+  idaco_day_sbpbr_res1,
+  idaco_night_sbpbr_res1,
+  spot_bp_sys_res1,
+  idaco_dia_avg_res1,
+  idaco_day_dia_res1,
+  idaco_night_dia_res1,
+  spot_bp_dys_res1
+)
 
 # Calculate the z-scores for the bp measurements
 updated_combined_data <- updated_combined_data %>%

@@ -3,44 +3,60 @@ library(ggpubr)
 library(ggcorrplot)
 library(ggtext)
 library(gt)
-################################################################################
+###############################################################################
 
-correlation_result <- as.data.frame((round(cor(updated_combined_data[,
-         c("spot_bp_sys", "idaco_sbpbr_avg", "idaco_day_sbpbr", "idaco_night_sbpbr",
-           "spot_bp_dys", "idaco_dia_avg", "idaco_day_dia", "idaco_night_dia")],
-        use = "complete.obs"), 2)))
+correlation_result <- as.data.frame(
+  (round(
+    cor(
+      updated_combined_data[,
+        c(
+          "spot_bp_sys",
+          "idaco_sbpbr_avg",
+          "idaco_day_sbpbr",
+          "idaco_night_sbpbr",
+          "spot_bp_dys",
+          "idaco_dia_avg",
+          "idaco_day_dia",
+          "idaco_night_dia"
+        )
+      ],
+      use = "complete.obs"
+    ),
+    2
+  ))
+)
 
 
 correlation_result %>%
-    gt(rownames_to_stub = TRUE) %>%
-    text_case_match(
-        "spot_bp_sys" ~ "Clinic SBP",
-        "idaco_sbpbr_avg" ~ "24 - hour SBP",
-        "idaco_day_sbpbr" ~ "Daytime SBP",
-        "idaco_night_sbpbr" ~ "Nighttime SBP",
-        "spot_bp_dys" ~ "Clinic DBP",
-        "idaco_dia_avg" ~ "24 - hour DBP",
-        "idaco_day_dia" ~ "Daytime DBP",
-        "idaco_night_dia" ~ "Nighttime DBP",
-        .locations = cells_stub()
-    ) %>%
-    cols_label(
-        spot_bp_sys = "Clinic SBP",
-        idaco_sbpbr_avg = "24 - hour SBP",
-        idaco_day_sbpbr = "Daytime SBP",
-        idaco_night_sbpbr = "Nighttime SBP",
-        spot_bp_dys = "Clinic DBP",
-        idaco_dia_avg = "24 - hour DBP",
-        idaco_day_dia = "Daytime DBP",
-        idaco_night_dia = "Nighttime DBP"
-    ) %>%
-    tab_header(
-        title = md("**The Correlation of blood pressure indices**")
-    ) %>%
-    tab_footnote(
-        footnote = "SBP - Systolic Blood pressure, DBP - Diastolic Blood Pressure",
-        locations = cells_stub(rows = c(1, 5))
-    )
+  gt(rownames_to_stub = TRUE) %>%
+  text_case_match(
+    "spot_bp_sys" ~ "Clinic SBP",
+    "idaco_sbpbr_avg" ~ "24 - hour SBP",
+    "idaco_day_sbpbr" ~ "Daytime SBP",
+    "idaco_night_sbpbr" ~ "Nighttime SBP",
+    "spot_bp_dys" ~ "Clinic DBP",
+    "idaco_dia_avg" ~ "24 - hour DBP",
+    "idaco_day_dia" ~ "Daytime DBP",
+    "idaco_night_dia" ~ "Nighttime DBP",
+    .locations = cells_stub()
+  ) %>%
+  cols_label(
+    spot_bp_sys = "Clinic SBP",
+    idaco_sbpbr_avg = "24 - hour SBP",
+    idaco_day_sbpbr = "Daytime SBP",
+    idaco_night_sbpbr = "Nighttime SBP",
+    spot_bp_dys = "Clinic DBP",
+    idaco_dia_avg = "24 - hour DBP",
+    idaco_day_dia = "Daytime DBP",
+    idaco_night_dia = "Nighttime DBP"
+  ) %>%
+  tab_header(
+    title = md("**The Correlation of blood pressure indices**")
+  ) %>%
+  tab_footnote(
+    footnote = "SBP - Systolic Blood pressure, DBP - Diastolic Blood Pressure",
+    locations = cells_stub(rows = c(1, 5))
+  )
 ##########################################################################################
 #Correlation plot.
 
@@ -61,19 +77,23 @@ custom_labels <- list(
 )
 
 ggcorrplot(
-    correlation_result,
-    type = "upper",
-    lab = TRUE,  # Show the correlation values on the plot
-    lab_size = 15,
-    outline.color = "black",
-    ggtheme = theme_minimal()
+  correlation_result,
+  type = "upper",
+  lab = TRUE, # Show the correlation values on the plot
+  lab_size = 15,
+  outline.color = "black",
+  ggtheme = theme_minimal()
 ) +
-scale_fill_gradient2(
-    low = "#00AFBB", high = "#FC4E07", mid = "white", 
-    midpoint = 0.5, limit = c(0, 1), space = "Lab",
-) +
-scale_x_discrete(labels = custom_labels) +
-scale_y_discrete(labels = custom_labels) +
+  scale_fill_gradient2(
+    low = "#00AFBB",
+    high = "#FC4E07",
+    mid = "white",
+    midpoint = 0.5,
+    limit = c(0, 1),
+    space = "Lab",
+  ) +
+  scale_x_discrete(labels = custom_labels) +
+  scale_y_discrete(labels = custom_labels) +
   theme(
     # Set overall plot appearance
     plot.background = element_rect(fill = "oldlace"),
@@ -84,11 +104,14 @@ scale_y_discrete(labels = custom_labels) +
     # Set axis appearance
     axis.line = element_line(colour = "black", size = 0.5),
     axis.text.x = element_markdown(colour = "black", size = 25),
-    axis.text.y= element_markdown(colour = "black", size = 25),
-    
+    axis.text.y = element_markdown(colour = "black", size = 25),
+
     # Set legend appearance
-    legend.background = element_rect(fill = "oldlace",
-        linewidth = 1, colour = "#e7e7d8"),
+    legend.background = element_rect(
+      fill = "oldlace",
+      linewidth = 1,
+      colour = "#e7e7d8"
+    ),
     legend.title = element_blank(), #nolint
     legend.text = element_text(colour = "black", size = 15),
     legend.key = element_blank(),
@@ -100,28 +123,41 @@ scale_y_discrete(labels = custom_labels) +
 
     #Set strip text appearance
     strip.background = element_rect(fill = "oldlace"),
-    strip.text = element_markdown(face = "bold", colour = "black",
-                                  size = 18),
+    strip.text = element_markdown(face = "bold", colour = "black", size = 18),
 
     # Set title appearance
-    plot.title = element_markdown(face = "bold", size = 25, #nolint
-                                  hjust = 0.5, vjust = -1),
-    plot.subtitle = element_markdown(face = "bold", size = 18, #nolint
-                                  hjust = 0.5, vjust = -1),
-    plot.caption = element_markdown(face = "bold", size = 8, #nolint
-                                  hjust = 1),
- 
+    plot.title = element_markdown(
+      face = "bold",
+      size = 25, #nolint
+      hjust = 0.5,
+      vjust = -1
+    ),
+    plot.subtitle = element_markdown(
+      face = "bold",
+      size = 18, #nolint
+      hjust = 0.5,
+      vjust = -1
+    ),
+    plot.caption = element_markdown(
+      face = "bold",
+      size = 8, #nolint
+      hjust = 1
+    ),
+
     # Set plot margins
     plot.margin = margin(1, 1, 1, 1, "cm")
-    )  +
+  ) +
   labs(
     title = "Correlation of blood pressure indices."
   )
 
-ggsave("Correlation_matrix.png",
-      path = "results/figures",
-      height = 20, width = 20,
-      dpi = 400)
+ggsave(
+  "Correlation_matrix.png",
+  path = "results/figures",
+  height = 20,
+  width = 20,
+  dpi = 400
+)
 
 ################################
 # -- Compare correlation after residualisation
@@ -132,15 +168,29 @@ common_theme <- theme_minimal() +
     plot.background = element_rect(fill = "white", colour = NA),
     panel.background = element_rect(fill = "white", colour = NA),
     panel.grid.major = element_line(colour = "grey70", linewidth = 0.4),
-    panel.grid.minor = element_line(colour = "grey70", linewidth = 0.3, linetype = "dotted"),
+    panel.grid.minor = element_line(
+      colour = "grey70",
+      linewidth = 0.3,
+      linetype = "dotted"
+    ),
     axis.line = element_line(colour = "black", linewidth = 0.5),
     axis.text = element_markdown(colour = "black", size = 20),
     axis.title = element_text(colour = "black", size = 30),
     legend.title = element_text(colour = "black", size = 18),
     legend.text = element_text(colour = "black", size = 15),
     legend.position.inside = c(1, 0.5),
-    plot.title = element_text(face = "bold", colour = "black", size = 30, hjust = 0.5),
-    plot.caption = element_markdown(colour = "black", size = 20, hjust = 1, vjust = 0.9),
+    plot.title = element_text(
+      face = "bold",
+      colour = "black",
+      size = 30,
+      hjust = 0.5
+    ),
+    plot.caption = element_markdown(
+      colour = "black",
+      size = 20,
+      hjust = 1,
+      vjust = 0.9
+    ),
     axis.title.x = element_text(margin = margin(t = 10), size = 30),
     axis.title.y = element_text(margin = margin(r = 10), size = 30),
     axis.ticks = element_line(colour = "grey20", linewidth = 0.2),
@@ -187,12 +237,14 @@ for (i in seq_along(var_pairs)) {
   y_label <- var_pairs[[i]]$y_label
   res_title <- var_pairs[[i]]$res_title
   res_y_label <- var_pairs[[i]]$res_y_label
-  
+
   # Calculate Pearson correlation for main plot
-  cor_coefs <- cor.test(updated_combined_data$spot_bp_sys, 
-                        updated_combined_data[[y_var]], 
-                        method = "pearson")
-  
+  cor_coefs <- cor.test(
+    updated_combined_data$spot_bp_sys,
+    updated_combined_data[[y_var]],
+    method = "pearson"
+  )
+
   # Create main scatter plot
   p <- updated_combined_data %>%
     ggplot(aes(x = spot_bp_sys, y = .data[[y_var]])) +
@@ -200,18 +252,24 @@ for (i in seq_along(var_pairs)) {
     geom_smooth(method = "lm", color = "#d70505") +
     labs(
       title = title,
-      caption = paste("Pearson Correlation: r =", round(cor_coefs$estimate, 2),
-                      "\nP-value:", format.pval(cor_coefs$p.value, eps = 0.01, digits = 2)),
+      caption = paste(
+        "Pearson Correlation: r =",
+        round(cor_coefs$estimate, 2),
+        "\nP-value:",
+        format.pval(cor_coefs$p.value, eps = 0.01, digits = 2)
+      ),
       x = "Clinic SBP (mmHg)",
       y = y_label
     ) +
     common_theme
-  
+
   # Calculate Pearson correlation for residual plot
-  cor_coefs_res <- cor.test(updated_combined_data$spot_bp_dys,
-                            updated_combined_data[[res_var]],
-                            method = "pearson")
-  
+  cor_coefs_res <- cor.test(
+    updated_combined_data$spot_bp_dys,
+    updated_combined_data[[res_var]],
+    method = "pearson"
+  )
+
   # Create residual scatter plot
   q <- updated_combined_data %>%
     ggplot(aes(x = spot_bp_dys, y = .data[[res_var]])) +
@@ -219,13 +277,17 @@ for (i in seq_along(var_pairs)) {
     geom_smooth(method = "lm", color = "#d70505") +
     labs(
       title = res_title,
-      caption = paste("Pearson Correlation: r =", round(cor_coefs_res$estimate, 2),
-                      "\nP-value:", format.pval(cor_coefs_res$p.value, eps = 0.01, digits = 2)),
+      caption = paste(
+        "Pearson Correlation: r =",
+        round(cor_coefs_res$estimate, 2),
+        "\nP-value:",
+        format.pval(cor_coefs_res$p.value, eps = 0.01, digits = 2)
+      ),
       x = "Clinic SBP (mmHg)",
       y = res_y_label
     ) +
     common_theme
-  
+
   # Store the pair of plots
   plot_list[[paste0("p_", i)]] <- p
   plot_list[[paste0("q_", i)]] <- q
@@ -233,13 +295,18 @@ for (i in seq_along(var_pairs)) {
 
 # Combine plots using patchwork: each pair side by side, pairs stacked vertically
 combined_plot <- (plot_list$p_1 + plot_list$q_1) /
-                 (plot_list$p_2 + plot_list$q_2) /
-                 (plot_list$p_3 + plot_list$q_3)
+  (plot_list$p_2 + plot_list$q_2) /
+  (plot_list$p_3 + plot_list$q_3)
 
 # Display the combined plot
 # combined_plot
 
 # Optionally, save the combined plot
-ggsave("correlation_SBP_plots.png", 
-       path = "results/figures",
-       combined_plot, width = 30, height = 40, dpi = 300)
+ggsave(
+  "correlation_SBP_plots.png",
+  path = "results/figures",
+  combined_plot,
+  width = 30,
+  height = 40,
+  dpi = 300
+)
