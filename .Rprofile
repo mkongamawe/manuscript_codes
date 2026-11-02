@@ -4,8 +4,10 @@ options(pkgType = "source")
 
 # --- Custom Conda-renv Bridge ---
 local({
-  conda_lib <- file.path(Sys.getenv("HOME"),
-                         "miniconda3/envs/r_env/lib/R/library")
+  conda_lib <- file.path(
+    Sys.getenv("HOME"),
+    "miniforge3/envs/r_env/lib/R/library"
+  )
   if (dir.exists(conda_lib)) {
     .libPaths(c(.libPaths(), conda_lib))
   }
@@ -15,9 +17,10 @@ local({
 if (interactive()) {
   init_file <- file.path(
     Sys.getenv(if (.Platform$OS.type == "windows") "USERPROFILE" else "HOME"),
-    ".vscode-R", "init.R"
+    ".vscode-R",
+    "init.R"
   )
-  
+
   if (Sys.getenv("VSCODE_INJECTION") == "1" && file.exists(init_file)) {
     source(init_file)
   }
@@ -26,7 +29,7 @@ if (interactive()) {
 .Last <- function() {
   if (interactive()) {
     cat("\n--- Terminating Session: Auto-snapshotting renv ---\n")
-# prompt = FALSE ensures it doesn't wait for your 'y/n' input while you're trying to leave
+    # prompt = FALSE ensures it doesn't wait for your 'y/n' input while you're trying to leave
     renv::snapshot(prompt = FALSE)
   }
 }
